@@ -1,0 +1,27 @@
+﻿@model CategoryModel
+
+<h4>Category</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm())
+        {
+            <input asp-for="Id" type="hidden" />
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-outline-primary" />
+            </div>
+        }
+    </div>
+</div>

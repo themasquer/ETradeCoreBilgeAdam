@@ -1,0 +1,128 @@
+﻿@model ProductsReportAjaxIndexViewModel
+
+@{
+    ViewData["Title"] = "Products Report";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div class="row">
+    <div class="col-2">
+        @await Component.InvokeAsync("Categories")
+    </div>
+    <div class="col-10">
+        <h5>Products</h5>
+        <hr />
+
+        @*<form asp-action="Index" method="post" autocomplete="off">*@
+        @*<form asp-action="Index" autocomplete="off" data-ajax="true" data-ajax-method="post" data-ajax-mode="before" data-ajax-update="#productsreport">*@
+        @*<form asp-action="Index" autocomplete="off" data-ajax="true" data-ajax-method="post" data-ajax-mode="after" data-ajax-update="#productsreport">*@
+        @*<form asp-action="Index" autocomplete="off" data-ajax="true" data-ajax-method="post" data-ajax-mode="replace" data-ajax-update="#productsreport">*@
+        <form asp-action="Index" autocomplete="off" id="form" data-ajax="true" data-ajax-method="post" data-ajax-mode="replacewith" data-ajax-update="#productsreport">
+            <input asp-for="ProductsFilter.CategoryId" type="hidden" />
+            <div class="row">
+
+                @*<div class="col-2">
+                        <label asp-for="ProductsFilter.CategoryId"></label>
+                    </div>
+                    <div class="col-4">
+                        <select asp-for="ProductsFilter.CategoryId" asp-items="Model.Categories" class="form-control">
+                            <option value="">-- All Categories --</option>
+                        </select>
+                    </div>*@
+
+                <div class="col-2">
+                    <label asp-for="ProductsFilter.ProductName"></label>
+                </div>
+                <div class="col-4">
+                    <input asp-for="ProductsFilter.ProductName" class="form-control"/>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 30px;">
+                <div class="col-2">
+                    <label asp-for="ProductsFilter.UnitPriceBeginText"></label>
+                </div>
+                <div class="col-4">
+                    <div class="input-group">
+                        <input asp-for="ProductsFilter.UnitPriceBeginText" class="form-control"/>
+                        <span class="input-group-text">-</span>
+                        <input asp-for="ProductsFilter.UnitPriceEndText" class="form-control"/>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <label asp-for="ProductsFilter.StockAmountBegin"></label>
+                </div>
+                <div class="col-4">
+                    <div class="input-group">
+                        <input asp-for="ProductsFilter.StockAmountBegin" class="form-control"/>
+                        <span class="input-group-text">-</span>
+                        <input asp-for="ProductsFilter.StockAmountEnd" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 30px;">
+                <div class="col-2">
+                    <label asp-for="ProductsFilter.ExpirationDateBeginText"></label>
+                </div>
+                <div class="col-4">
+                    <div class="input-group">
+                        <input asp-for="ProductsFilter.ExpirationDateBeginText" class="form-control expiration-date"/>
+                        <span class="input-group-text">-</span>
+                        <input asp-for="ProductsFilter.ExpirationDateEndText" class="form-control expiration-date"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 30px;">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary" id="search"><i class="fas fa-search"></i> Search</button>
+                    &nbsp;&nbsp;&nbsp;
+                    <a asp-action="Index" class="btn btn-info"><i class="fas fa-sync"></i> Clear</a>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div id="productsreport">
+                @*@Html.Partial("_ProductsReport", Model)*@ @* ASP.NET Core'da bu kullanılmamalı, bunun async versiyonu veya tag helper'ı kullanılmalı! *@
+
+                @*@Html.PartialAsync("_ProductsReport", Model)*@
+                <partial name="_ProductsReport" model="Model"/>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+
+    <link href="~/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <script src="~/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.expiration-date').datepicker({
+                todayBtn: "linked",
+                clearBtn: true,
+                orientation: "bottom auto",
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            // Search butonuna tıklandığında kayıtlar 1. sayfa üzerinden gelmeli.
+            // Sayfa numarası değiştiğinde form tekrar submit edilerek o sayfadaki kayıtlar getirilmeli.
+            $("#search").click(function () {
+                $("#pagenumber").val("1");
+            });
+
+            //$("#pagenumber").change(function() { // AJAX kullanmasaydık pagenumber change event'ini bu şekilde tanımlayabilirdik.
+            //    $("#form").submit();
+            //});
+            $(document).on("change", "#pagenumber", function () { // AJAX kullandığımız için pagenumber change event'i bu şekilde tanımlanmalıdır.
+                $("#form").submit();
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<CityModel>
+
+@{
+    ViewData["Title"] = "City List";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create"><i class="fas fa-plus"></i> Create New City</a>
+</p>
+<p class="bg-primary text-white">
+    @{
+        string count;
+        if (Model != null)
+        {
+            if (Model.Count() == 0)
+            {
+                count = "No cities found";
+            }
+            else if (Model.Count() == 1)
+            {
+                count = Model.Count() + " city found";
+            }
+            else //if (Model.Count() > 1)
+            {
+                count = Model.Count() + " cities found";
+            }
+        }
+        else
+        {
+            count = "No cities found";
+        }
+        @count
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-lg fa-pen-square"></i> Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,90 @@
+﻿@model ProductsReportAjaxIndexViewModel
+
+<div class="row" style="padding-bottom: 15px;">
+    <div class="col-1">
+        <select asp-for="PageNumber" asp-items="Model.Pages" class="form-control" id="pagenumber"></select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        @if (Model.ProductsReport != null && Model.ProductsReport.Count > 0)
+        {
+            string recordsCount;
+            if (Model.ProductsReport.Count == 1)
+            {
+                recordsCount = Model.ProductsReport.Count + " record found";
+            }
+            else
+            {
+                recordsCount = Model.ProductsReport.Count + " records found";
+            }
+            <p class="bg-primary text-white">
+                @recordsCount
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().CategoryName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().ProductName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().UnitPriceText)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().StockAmount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().ExpirationDateText)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ProductsReport)
+                    {
+                        <tr>
+                            <td>
+                                @if (string.IsNullOrWhiteSpace(item.CategoryDescription))
+                                {
+                                    @Html.DisplayFor(modelItem => item.CategoryName)
+                                }
+                                else
+                                {
+                                    <a title="@item.CategoryDescription" style="cursor: zoom-in;"><i class="fas fa-info-circle"></i> @item.CategoryName</a>
+                                }
+                            </td>
+                            <td>
+                                @if (string.IsNullOrWhiteSpace(item.ProductDescription))
+                                {
+                                    @Html.DisplayFor(modelItem => item.ProductName)
+                                }
+                                else
+                                {
+                                    <a title="@item.ProductDescription" style="cursor: zoom-in;"><i class="fas fa-info-circle"></i> @item.ProductName</a>
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UnitPriceText)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StockAmount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ExpirationDateText)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="bg-primary text-white">
+                No records found
+            </p>
+        }
+    </div>
+</div>

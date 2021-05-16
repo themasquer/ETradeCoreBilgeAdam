@@ -1,0 +1,60 @@
+﻿@model IEnumerable<RoleModel>
+
+@{
+    ViewData["Title"] = "Role List";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create"><i class="fas fa-plus"></i> Create New Role</a>
+</p>
+<p class="bg-primary text-white">
+    @{
+        string count;
+        if (Model != null)
+        {
+            if (Model.Count() == 0)
+            {
+                count = "No roles found";
+            }
+            else if (Model.Count() == 1)
+            {
+                count = Model.Count() + " role found";
+            }
+            else //if (Model.Count() > 1)
+            {
+                count = Model.Count() + " roles found";
+            }
+        }
+        else
+        {
+            count = "No roles found";
+        }
+        @count
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-lg fa-info-circle"></i> Details</a> | 
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-lg fa-pen-square"></i> Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

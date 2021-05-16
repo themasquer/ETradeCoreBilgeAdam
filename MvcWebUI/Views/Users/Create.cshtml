@@ -1,0 +1,133 @@
+﻿@model UserModel
+
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserDetail.EMail"></label>
+                <input asp-for="UserDetail.EMail" class="form-control" />
+                <span asp-validation-for="UserDetail.EMail" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="RoleId" class="col-1"></label>
+                <div class="col-11">
+                    @{
+                        var roles = ViewBag.Roles as SelectList; @* Controller'da SelectList olarak oluşturmuştuk, bu yüzden SelectList kullandık *@
+                        if (roles != null && roles.Count() > 0)
+                        {
+                            foreach (var role in roles)
+                            {
+                                if (role.Selected)
+                                {
+                                    <input asp-for="RoleId" type="radio" value="@role.Value" checked />
+                                }
+                                else
+                                {
+                                    <input asp-for="RoleId" type="radio" value="@role.Value" />
+                                }
+                                @:&nbsp;
+                                @role.Text
+                                @:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            }
+                        }
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Active" class="col-1"></label>
+                <div class="col-11">
+                    <input asp-for="Active" type="checkbox" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserDetail.CountryId"></label>
+                <select asp-for="UserDetail.CountryId" asp-items="ViewBag.Countries" class="form-control" id="countries">
+                    <option value="">-- Select Country --</option>
+                </select>
+                <span asp-validation-for="UserDetail.CountryId" class="text-danger"></span>
+                <span id="countriesMessage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserDetail.CityId"></label>
+                <select asp-for="UserDetail.CityId" asp-items="ViewBag.Cities" class="form-control cities">
+                    @if (ViewBag.Cities == null)
+                    {
+                        <option value="">-- Select Country --</option>
+                    }
+                    else
+                    {
+                        <option value="">-- Select City --</option>
+                    }
+                </select>
+                <span asp-validation-for="UserDetail.CityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserDetail.Address"></label>
+                <textarea asp-for="UserDetail.Address" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="UserDetail.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                &nbsp;&nbsp;&nbsp;
+                <button type="reset" class="btn btn-warning">Reset</button>
+            </div>
+            <div class="form-group">
+                <a asp-action="Index">Back to User List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#countries").change(function () {
+                $(".cities").empty();
+                $("#countriesMessage").text("");
+                var selectedCountryId = $("#countries").val();
+                if (selectedCountryId === "") {
+                    $("#countriesMessage").text("Please select a country...");
+                    $(".cities").append('<option value="">-- Select Country --</option>');
+                } else {
+                    $.ajax({
+                        cache: false,
+                        dataType: "json",
+                        url: "/CitiesJson/CitiesPost",
+                        type: "post",
+                        data: { countryId: selectedCountryId },
+                        success: function (cities) {
+                            $(".cities").append('<option value="">-- Select City --</option>');
+                            for (var i = 0; i < cities.length; i++) {
+                                $(".cities").append('<option value="' + cities[i].id + '">' + cities[i].name + '</option>');
+                            }
+                        },
+                        error: function () {
+                            alert("An error occured during AJAX request!");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

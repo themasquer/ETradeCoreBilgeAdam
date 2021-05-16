@@ -1,0 +1,77 @@
+﻿@model IEnumerable<UserModel>
+
+@{
+    ViewData["Title"] = "User List";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create"><i class="fas fa-plus"></i> Create New User</a>
+</p>
+<p class="bg-primary text-white">
+    @{
+        string count;
+        if (Model != null && Model.Count() > 0)
+        {
+            if (Model.Count() == 1)
+            {
+                count = Model.Count() + " user found";
+            }
+            else //if (Model.Count() > 1)
+            {
+                count = Model.Count() + " users found";
+            }
+        }
+        else
+        {
+            count = ViewBag.Message.ToString();
+        }
+        @count
+    }
+</p>
+@if (Model != null && Model.Count() > 0)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Role.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserDetail.EMail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveText)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserDetail.EMail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActiveText)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-lg fa-info-circle"></i> Details</a> | 
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-lg fa-pen-square"></i> Edit</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

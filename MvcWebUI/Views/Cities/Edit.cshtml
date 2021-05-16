@@ -1,0 +1,32 @@
+﻿@model CityModel
+
+@{
+    ViewData["Title"] = "Edit City";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<partial name="_CreateEdit" model="Model" />
+
+<form id="deleteCityForm" asp-action="Delete" method="post">
+    <input asp-for="Id" type="hidden" />
+</form>
+
+<div>
+    <button id="deleteCityButton" class="btn btn-danger">Delete</button>
+    <br />
+    <br />
+    <a asp-action="Index">Back to City List</a>
+</div>
+
+@section Scripts
+{
+    @* Burada silme için kullandığımız form yönteminin bir diğer ve kullanımı biraz daha zor alternatifi AJAX yöntemidir. *@
+    <script>
+        $(function() {
+            $("#deleteCityButton").click(function () {
+                $("#deleteCityForm").submit();
+            });
+        });
+    </script>
+}

@@ -1,0 +1,73 @@
+﻿@model List<CartGroupByModel>
+
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model != null && Model.Count > 0)
+{
+    <p>
+        <a asp-action="ClearCart">Clear Cart</a>
+    </p>
+    <p class="bg-success text-white">
+        @{
+            string count;
+            int totalProductCount = Model.Sum(m => m.TotalCount);
+            if (totalProductCount == 1)
+            {
+                count = totalProductCount + " product found";
+            }
+            else
+            {
+                count = totalProductCount + " products found";
+            }
+            @count
+        }
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().TotalUnitPriceText)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().TotalCount)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalUnitPriceText)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalCount)
+                    </td>
+                    <td>
+                        <a asp-action="RemoveFromCart" asp-route-productId="@item.ProductId" asp-route-userId="@item.UserId">Remove from Cart</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="bg-danger text-white">No products found in cart</p>
+}
+
+@if (TempData["CartMessage"] != null)
+{
+    <p class="bg-warning text-white">@TempData["CartMessage"]</p>
+}

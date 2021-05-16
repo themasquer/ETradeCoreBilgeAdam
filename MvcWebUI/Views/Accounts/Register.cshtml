@@ -1,0 +1,136 @@
+﻿@model UserRegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Register">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserDetail.EMail"></label>
+                <input asp-for="UserDetail.EMail" class="form-control" />
+                <span asp-validation-for="UserDetail.EMail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserDetail.CountryId"></label>
+                <select asp-for="UserDetail.CountryId" asp-items="ViewBag.Countries" class="form-control" id="countries">
+                    <option value="">-- Select Country --</option>
+                </select>
+                <span asp-validation-for="UserDetail.CountryId" class="text-danger"></span>
+                <span id="countriesMessage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserDetail.CityId"></label>
+                <select asp-for="UserDetail.CityId" asp-items="ViewBag.Cities" class="form-control cities">
+                    @if (ViewBag.Cities == null)
+                    {
+                        <option value="">-- Select Country --</option>
+                    }
+                    else
+                    {
+                        <option value="">-- Select City --</option>
+                    }
+                </select>
+                <span asp-validation-for="UserDetail.CityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserDetail.Address"></label>
+                <textarea asp-for="UserDetail.Address" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="UserDetail.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        //$(document).ready(function() {
+
+        //});
+        $(function () {
+            $("#countries").change(function () {
+                $(".cities").empty();
+                $("#countriesMessage").text("");
+                var selectedCountryId = $("#countries").val();
+                if (selectedCountryId === "") {
+                    $("#countriesMessage").text("Please select a country...");
+                    $(".cities").append('<option value="">-- Select Country --</option>');
+                } else {
+
+                    //$.ajax({
+                    //    cache: false,
+
+                    //    // ASP.NET Core web uygulamalarında problem çıkarır, .NET Framework web uygulamalarında kullanılabilir.
+                    //    //contentType: "application/json;charset=utf-8;",
+
+                    //    dataType: "json",
+
+                    //    // GET isteği 1. yöntem:
+                    //    //url: "/CitiesJson/CitiesGet/" + selectedCountryId,
+                    //    //type: "get",
+
+                    //    // GET isteği 2. yöntem:
+                    //    //url: "/CitiesJson/CitiesGet",
+                    //    //type: "get",
+                    //    //data: { countryId: selectedCountryId },
+
+                    //    // POST isteği:
+                    //    url: "/CitiesJson/CitiesPost",
+                    //    type: "post",
+                    //    data: { countryId: selectedCountryId },
+
+                    //    success: function(cities) {
+                    //        $(".cities").append('<option value="">-- Select City --</option>');
+                    //        for (var i = 0; i < cities.length; i++) {
+                    //            $(".cities").append('<option value="' + cities[i].id + '">' + cities[i].name + '</option>');
+                    //        }
+                    //    },
+                    //    error: function() {
+                    //        alert("An error occured during AJAX request!");
+                    //    }
+                    //});
+                    $.getJSON(
+                        //"/CitiesJson/CitiesGet/" + selectedCountryId, // GET isteği 1. yöntem
+
+                        "/CitiesJson/CitiesGet", // GET isteği 2. yöntem
+                        { countryId: selectedCountryId },
+
+                        function(cities) {
+                            $(".cities").append('<option value="">-- Select City --</option>');
+                            for (var i = 0; i < cities.length; i++) {
+                                $(".cities").append('<option value="' + cities[i].id + '">' + cities[i].name + '</option>');
+                            }
+                        }
+                    );
+
+                }
+            });
+        });
+    </script>
+}
