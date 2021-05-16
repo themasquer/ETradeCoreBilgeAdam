@@ -22,23 +22,123 @@
             <p class="bg-primary text-white">
                 @recordsCount
             </p>
+
+            @* Sıralama *@
+            <input asp-for="OrderByExpression" type="hidden" id="orderbyexpressioninput" />
+            <input asp-for="OrderByDirectionAscending" type="hidden" id="orderbydirectioninput" />
+
             <table class="table">
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().CategoryName)
+
+                            @* Sıralama *@
+                            @*@Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().CategoryName)*@
+                            @{
+                                string categoryDisplayName = Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().CategoryName);
+                            }
+                            <a href="#" class="orderbyexpressionlink">@categoryDisplayName</a>
+                            &nbsp;
+                            @if (!string.IsNullOrWhiteSpace(Model.OrderByExpression) && Model.OrderByExpression == categoryDisplayName)
+                            {
+                                if (Model.OrderByDirectionAscending)
+                                {
+                                    <span class="text-primary"><i class="fas fa-sort-up"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="text-primary"><i class="fas fa-sort-down"></i></span>
+                                }
+                            }
+
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().ProductName)
+
+                            @* Sıralama *@
+                            @*@Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().ProductName)*@
+                            @{
+                                string productDisplayName = Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().ProductName);
+                            }
+                            <a href="#" class="orderbyexpressionlink">@productDisplayName</a>
+                            &nbsp;
+                            @if (!string.IsNullOrWhiteSpace(Model.OrderByExpression) && Model.OrderByExpression == productDisplayName)
+                            {
+                                if (Model.OrderByDirectionAscending)
+                                {
+                                    <span class="text-primary"><i class="fas fa-sort-up"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="text-primary"><i class="fas fa-sort-down"></i></span>
+                                }
+                            }
+
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().UnitPriceText)
+
+                            @* Sıralama *@
+                            @*@Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().UnitPriceText)*@
+                            @{
+                                string unitPriceDisplayName = Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().UnitPriceText);
+                            }
+                            <a href="#" class="orderbyexpressionlink">@unitPriceDisplayName</a>
+                            &nbsp;
+                            @if (!string.IsNullOrWhiteSpace(Model.OrderByExpression) && Model.OrderByExpression == unitPriceDisplayName)
+                            {
+                                if (Model.OrderByDirectionAscending)
+                                {
+                                    <span class="text-primary"><i class="fas fa-sort-up"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="text-primary"><i class="fas fa-sort-down"></i></span>
+                                }
+                            }
+
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().StockAmount)
+
+                            @* Sıralama *@
+                            @*Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().StockAmount)*@
+                            @{
+                                string stockAmountDisplayName = Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().StockAmount);
+                            }
+                            <a href="#" class="orderbyexpressionlink">@stockAmountDisplayName</a>
+                            &nbsp;
+                            @if (!string.IsNullOrWhiteSpace(Model.OrderByExpression) && Model.OrderByExpression == stockAmountDisplayName)
+                            {
+                                if (Model.OrderByDirectionAscending)
+                                {
+                                    <span class="text-primary"><i class="fas fa-sort-up"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="text-primary"><i class="fas fa-sort-down"></i></span>
+                                }
+                            }
+
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().ExpirationDateText)
+
+                            @* Sıralama *@
+                            @*@Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().ExpirationDateText)*@
+                            @{
+                                string expirationDateDisplayName = Html.DisplayNameFor(model => model.ProductsReport.FirstOrDefault().ExpirationDateText);
+                            }
+                            <a href="#" class="orderbyexpressionlink">@expirationDateDisplayName</a>
+                            &nbsp;
+                            @if (!string.IsNullOrWhiteSpace(Model.OrderByExpression) && Model.OrderByExpression == expirationDateDisplayName)
+                            {
+                                if (Model.OrderByDirectionAscending)
+                                {
+                                    <span class="text-primary"><i class="fas fa-sort-up"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="text-primary"><i class="fas fa-sort-down"></i></span>
+                                }
+                            }
+
                         </th>
                     </tr>
                 </thead>

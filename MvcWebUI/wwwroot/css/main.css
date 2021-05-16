@@ -217,3 +217,15 @@ ul.admin {
 .div-header {
     padding-top: 25px !important;
 }
+
+.ul-categories {
+    text-align: left;
+}
+
+    .ul-categories li a {
+        color: blue;
+    }
+
+    .ul-categories li.active a {
+        color: red;
+    }

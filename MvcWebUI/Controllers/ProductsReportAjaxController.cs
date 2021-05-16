@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AppCore.Business.Models.Ordering;
 using AppCore.Business.Models.Paging;
 using AppCore.Business.Models.Results;
 using Business.Models.Filters;
@@ -92,7 +93,17 @@ namespace MvcWebUI.Controllers
                     PageNumber = viewModel.PageNumber,
                     RecordsPerPageCount = AppSettings.RecordsPerPageCount
                 };
-                var result = _productService.GetProductsReport(viewModel.ProductsFilter, page);
+
+                // Sıralama
+                #region Ordering
+                var order = new OrderModel()
+                {
+                    Expression = viewModel.OrderByExpression,
+                    DirectionAscending = viewModel.OrderByDirectionAscending
+                };
+                #endregion
+
+                var result = _productService.GetProductsReport(viewModel.ProductsFilter, page, order);
                 if (result.Status == ResultStatus.Exception)
                     throw new Exception(result.Message);
                 viewModel.ProductsReport = result.Data;

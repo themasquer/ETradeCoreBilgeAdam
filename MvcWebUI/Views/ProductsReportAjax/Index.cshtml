@@ -9,7 +9,8 @@
 
 <div class="row">
     <div class="col-2">
-        @await Component.InvokeAsync("Categories")
+        @*@await Component.InvokeAsync("Categories")*@
+        @await Component.InvokeAsync("Categories", Model.ProductsFilter.CategoryId)
     </div>
     <div class="col-10">
         <h5>Products</h5>
@@ -120,6 +121,20 @@
             //    $("#form").submit();
             //});
             $(document).on("change", "#pagenumber", function () { // AJAX kullandığımız için pagenumber change event'i bu şekilde tanımlanmalıdır.
+                $("#form").submit();
+            });
+
+            // Sıralama
+            $(document).on("click", ".orderbyexpressionlink", function (event) { // AJAX kullandığımız için orderbyexpressionlink click event'i bu şekilde tanımlanmalıdır.
+                event.preventDefault();
+                $("#orderbyexpressioninput").val($(this).text()); // tıklanan link'in yazısını alıp input'a yazdırıyoruz.
+                var ascending = $("#orderbydirectioninput").val(); // asc için True, desc için False
+                if (ascending === "True") { // link'e tıkladıkça artanı azalan, azalanı artan olarak değiştiriyoruz.
+                    ascending = "False";
+                } else {
+                    ascending = "True";
+                }
+                $("#orderbydirectioninput").val(ascending);
                 $("#form").submit();
             });
 

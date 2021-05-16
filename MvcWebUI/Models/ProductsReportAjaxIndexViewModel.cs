@@ -10,6 +10,7 @@ namespace MvcWebUI.Models
         public ProductsReportAjaxIndexViewModel()
         {
             PageNumber = 1;
+            OrderByDirectionAscending = true;
         }
 
         public List<ProductsReportModel> ProductsReport { get; set; }
@@ -18,5 +19,9 @@ namespace MvcWebUI.Models
 
         public int PageNumber { get; set; }
         public SelectList Pages { get; set; }
+
+        // Sıralama
+        public string OrderByExpression { get; set; }
+        public bool OrderByDirectionAscending { get; set; }
     }
 }

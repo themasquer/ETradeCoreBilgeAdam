@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using AppCore.Business.Models.Ordering;
 using AppCore.Business.Models.Paging;
 using Business.Models.Filters;
 
@@ -160,7 +161,7 @@ namespace Business.Services
 
         //[Obsolete("Bu methodun daha yeni bir versiyonu bulunmaktadır.")] 
         // obsolete: kullanıldığı yerde kullanıldığı yapının daha yeni bir versiyonu olduğunu ve bu yeni versiyonun kullanılmasının gerektiğini belirtir. 
-        public Result<List<ProductsReportModel>> GetProductsReport(ProductsReportFilterModel filter, PageModel page = null)
+        public Result<List<ProductsReportModel>> GetProductsReport(ProductsReportFilterModel filter, PageModel page = null, OrderModel order = null)
         {
             try
             {
@@ -209,6 +210,41 @@ namespace Business.Services
 
                 #region Query First Order
                 query = query.OrderBy(q => q.CategoryName).ThenBy(q => q.ProductName); // *1
+                #endregion
+
+                // Sıralama
+                #region Order
+                if (order != null && !string.IsNullOrWhiteSpace(order.Expression))
+                {
+                    switch (order.Expression)
+                    {
+                        case "Product Name":
+                            query = order.DirectionAscending
+                                ? query.OrderBy(q => q.ProductName)
+                                : query.OrderByDescending(q => q.ProductName);
+                            break;
+                        case "Category Name":
+                            query = order.DirectionAscending
+                                ? query.OrderBy(q => q.CategoryName)
+                                : query.OrderByDescending(q => q.CategoryName);
+                            break;
+                        case "Unit Price":
+                            query = order.DirectionAscending
+                                ? query.OrderBy(q => q.UnitPrice)
+                                : query.OrderByDescending(q => q.UnitPrice);
+                            break;
+                        case "Stock Amount":
+                            query = order.DirectionAscending
+                                ? query.OrderBy(q => q.StockAmount)
+                                : query.OrderByDescending(q => q.StockAmount);
+                            break;
+                        default: // Expiration Date
+                            query = order.DirectionAscending
+                                ? query.OrderBy(q => q.ExpirationDate)
+                                : query.OrderByDescending(q => q.ExpirationDate);
+                            break;
+                    }
+                }
                 #endregion
 
                 #region Query Filter

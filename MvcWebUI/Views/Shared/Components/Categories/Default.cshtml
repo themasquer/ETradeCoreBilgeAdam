@@ -2,29 +2,35 @@
 
 @if (Model != null && Model.Count > 0)
 {
-    <table>
-        <thead>
-            <tr>
-                <th>
-                    <h5>Categories</h5>
-                    <hr />
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <a asp-action="Index" asp-controller="ProductsReportAjax">-- All Categories --</a>
-                </td>
-            </tr>
-            @foreach (var category in Model)
+    <h5>Categories</h5>
+    <hr />
+    <ul class="navbar-nav ul-categories">
+        @if (ViewBag.CategoryId == null)
+        {
+            <li class="active">
+                <a asp-action="Index" asp-controller="ProductsReportAjax">All Categories</a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a asp-action="Index" asp-controller="ProductsReportAjax">All Categories</a>
+            </li>
+        }
+        @foreach (var category in Model)
+        {
+            @if (ViewBag.CategoryId != null && Convert.ToInt32(ViewBag.CategoryId) == category.Id)
             {
-                <tr>
-                    <td>
-                        <a asp-action="Index" asp-controller="ProductsReportAjax" asp-route-categoryId="@category.Id">@category.Name</a>
-                    </td>
-                </tr>
+                <li class="active">
+                    <a asp-action="Index" asp-controller="ProductsReportAjax" asp-route-categoryId="@category.Id">@category.Name</a>
+                </li>
             }
-        </tbody>
-    </table>
+            else
+            {
+                <li>
+                    <a asp-action="Index" asp-controller="ProductsReportAjax" asp-route-categoryId="@category.Id">@category.Name</a>
+                </li>
+            }
+        }
+    </ul>
 }

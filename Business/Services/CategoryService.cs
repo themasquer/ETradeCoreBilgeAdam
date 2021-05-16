@@ -4,7 +4,10 @@ using Business.Services.Bases;
 using DataAccess.EntityFramework.Repositories.Bases;
 using Entities.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Business.Services
 {
@@ -98,6 +101,25 @@ namespace Business.Services
             catch (Exception exc)
             {
                 return new ExceptionResult(exc);
+            }
+        }
+
+        // Async Methodlar
+        public async Task<Result<List<CategoryModel>>> GetCategoriesAsync()
+        {
+            try
+            {
+                List<Category> categoryEntities = await _categoryRepository.Query().OrderBy(c => c.Name).ToListAsync();
+                List<CategoryModel> categories = categoryEntities.Select(c => new CategoryModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                }).ToList();
+                return new SuccessResult<List<CategoryModel>>(categories);
+            }
+            catch (Exception exc)
+            {
+                return new ExceptionResult<List<CategoryModel>>(exc);
             }
         }
     }
