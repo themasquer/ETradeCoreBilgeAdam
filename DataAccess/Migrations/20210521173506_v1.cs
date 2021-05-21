@@ -8,7 +8,7 @@ namespace DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "ETradeCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -19,11 +19,11 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_ETradeCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Countries",
+                name: "ETradeCountries",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -33,11 +33,11 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Countries", x => x.Id);
+                    table.PrimaryKey("PK_ETradeCountries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "ETradeRoles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -47,11 +47,11 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_ETradeRoles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "ETradeProducts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -62,20 +62,21 @@ namespace DataAccess.Migrations
                     StockAmount = table.Column<int>(type: "int", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
+                    ImageFileName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Guid = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_ETradeProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_CategoryId",
+                        name: "FK_ETradeProducts_ETradeCategories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        principalTable: "ETradeCategories",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cities",
+                name: "ETradeCities",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -86,16 +87,16 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cities", x => x.Id);
+                    table.PrimaryKey("PK_ETradeCities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cities_Countries_CountryId",
+                        name: "FK_ETradeCities_ETradeCountries_CountryId",
                         column: x => x.CountryId,
-                        principalTable: "Countries",
+                        principalTable: "ETradeCountries",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserDetails",
+                name: "ETradeUserDetails",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -108,21 +109,21 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserDetails", x => x.Id);
+                    table.PrimaryKey("PK_ETradeUserDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserDetails_Cities_CityId",
+                        name: "FK_ETradeUserDetails_ETradeCities_CityId",
                         column: x => x.CityId,
-                        principalTable: "Cities",
+                        principalTable: "ETradeCities",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UserDetails_Countries_CountryId",
+                        name: "FK_ETradeUserDetails_ETradeCountries_CountryId",
                         column: x => x.CountryId,
-                        principalTable: "Countries",
+                        principalTable: "ETradeCountries",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "ETradeUsers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -136,58 +137,58 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_ETradeUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Roles_RoleId",
+                        name: "FK_ETradeUsers_ETradeRoles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Roles",
+                        principalTable: "ETradeRoles",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Users_UserDetails_UserDetailId",
+                        name: "FK_ETradeUsers_ETradeUserDetails_UserDetailId",
                         column: x => x.UserDetailId,
-                        principalTable: "UserDetails",
+                        principalTable: "ETradeUserDetails",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cities_CountryId",
-                table: "Cities",
+                name: "IX_ETradeCities_CountryId",
+                table: "ETradeCities",
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CategoryId",
-                table: "Products",
+                name: "IX_ETradeProducts_CategoryId",
+                table: "ETradeProducts",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_Name",
-                table: "Products",
+                name: "IX_ETradeProducts_Name",
+                table: "ETradeProducts",
                 column: "Name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDetails_CityId",
-                table: "UserDetails",
+                name: "IX_ETradeUserDetails_CityId",
+                table: "ETradeUserDetails",
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDetails_CountryId",
-                table: "UserDetails",
+                name: "IX_ETradeUserDetails_CountryId",
+                table: "ETradeUserDetails",
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDetails_EMail",
-                table: "UserDetails",
+                name: "IX_ETradeUserDetails_EMail",
+                table: "ETradeUserDetails",
                 column: "EMail",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_RoleId",
-                table: "Users",
+                name: "IX_ETradeUsers_RoleId",
+                table: "ETradeUsers",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_UserDetailId",
-                table: "Users",
+                name: "IX_ETradeUsers_UserDetailId",
+                table: "ETradeUsers",
                 column: "UserDetailId",
                 unique: true);
         }
@@ -195,25 +196,25 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "ETradeProducts");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "ETradeUsers");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "ETradeCategories");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "ETradeRoles");
 
             migrationBuilder.DropTable(
-                name: "UserDetails");
+                name: "ETradeUserDetails");
 
             migrationBuilder.DropTable(
-                name: "Cities");
+                name: "ETradeCities");
 
             migrationBuilder.DropTable(
-                name: "Countries");
+                name: "ETradeCountries");
         }
     }
 }

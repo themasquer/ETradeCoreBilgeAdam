@@ -27,24 +27,28 @@ namespace DataAccess.EntityFramework.Contexts
         {
             modelBuilder.Entity<Product>()
                 //.ToTable("Urunler")
+                .ToTable("ETradeProducts")
                 .HasOne(product => product.Category)
                 .WithMany(category => category.Products)
                 .HasForeignKey(product => product.CategoryId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<City>()
+                .ToTable("ETradeCities")
                 .HasOne(city => city.Country)
                 .WithMany(country => country.Cities)
                 .HasForeignKey(city => city.CountryId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<User>()
+                .ToTable("ETradeUsers")
                 .HasOne(user => user.Role)
                 .WithMany(role => role.Users)
                 .HasForeignKey(user => user.RoleId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<UserDetail>()
+                .ToTable("ETradeUserDetails")
                 .HasOne(userDetail => userDetail.Country)
                 .WithMany(country => country.UserDetails)
                 .HasForeignKey(userDetail => userDetail.CountryId)
@@ -68,6 +72,18 @@ namespace DataAccess.EntityFramework.Contexts
 
             modelBuilder.Entity<Product>()
                 .HasIndex(product => product.Name);
+
+            modelBuilder.Entity<Category>()
+                .ToTable("ETradeCategories");
+
+            modelBuilder.Entity<Country>()
+                .ToTable("ETradeCountries");
+
+            modelBuilder.Entity<Role>()
+                .ToTable("ETradeRoles");
+
+            modelBuilder.Entity<Role>()
+                .ToTable("ETradeRoles");
         }
     }
 }

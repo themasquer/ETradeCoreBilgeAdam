@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ETradeContext))]
-    [Migration("20210516144916_v2")]
-    partial class v2
+    [Migration("20210521173506_v1")]
+    partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,7 +42,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("ETradeCategories");
                 });
 
             modelBuilder.Entity("Entities.Entities.City", b =>
@@ -67,7 +67,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("ETradeCities");
                 });
 
             modelBuilder.Entity("Entities.Entities.Country", b =>
@@ -87,7 +87,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("ETradeCountries");
                 });
 
             modelBuilder.Entity("Entities.Entities.Product", b =>
@@ -131,7 +131,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("Products");
+                    b.ToTable("ETradeProducts");
                 });
 
             modelBuilder.Entity("Entities.Entities.Role", b =>
@@ -151,7 +151,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("ETradeRoles");
                 });
 
             modelBuilder.Entity("Entities.Entities.User", b =>
@@ -190,7 +190,7 @@ namespace DataAccess.Migrations
                     b.HasIndex("UserDetailId")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("ETradeUsers");
                 });
 
             modelBuilder.Entity("Entities.Entities.UserDetail", b =>
@@ -228,7 +228,7 @@ namespace DataAccess.Migrations
                     b.HasIndex("EMail")
                         .IsUnique();
 
-                    b.ToTable("UserDetails");
+                    b.ToTable("ETradeUserDetails");
                 });
 
             modelBuilder.Entity("Entities.Entities.City", b =>
